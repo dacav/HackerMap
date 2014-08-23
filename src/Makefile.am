@@ -24,8 +24,8 @@ bin_PROGRAMS = hackermap
 noinst_LIBRARIES = libhackermap.a
 
 libhackermap_a_SOURCES = \
-	cortroller.cpp
+	cortroller.cc
 
-hackermap_SOURCES = main.cpp
+hackermap_SOURCES = main.cc
 hackermap_LDADD = -lhackermap
 hackermap_DEPENDENCIES = libhackermap.a

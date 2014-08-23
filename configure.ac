@@ -19,7 +19,7 @@ AC_PREREQ([2.62])
 
 dnl Where to generate output; srcdir location.
 AC_CONFIG_HEADERS([config.h:config.in])
-AC_CONFIG_SRCDIR([src/cortroller.cpp])
+AC_CONFIG_SRCDIR([src/cortroller.cc])
 
 dnl Checks for programs.
 AC_PROG_CC
