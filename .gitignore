@@ -7,6 +7,7 @@ autom4te.cache
 stamp-h1
 build-aux
 config.h
+config.in
 config.log
 config.status
 configure
