@@ -20,14 +20,10 @@
 AM_CFLAGS = -std=gnu99 -Wall -Werror
 AM_LDFLAGS = -L../src
 
-check_PROGRAMS = array00 bytes00
+#check_PROGRAMS = array00 bytes00
 
 TESTS = $(check_PROGRAMS)
 
-array00_SOURCES = array-test.c
-array00_LDADD = -lalldiff
-array00_DEPENDENCIES = $(srcdir)/../src/liballdiff.a
-
-bytes00_SOURCES = bytes-test.c
-bytes00_LDADD = -lalldiff
-bytes00_DEPENDENCIES = $(srcdir)/../src/liballdiff.a
+#array00_SOURCES = array-test.c
+#array00_LDADD = -lhackermap
+#array00_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
