@@ -24,7 +24,8 @@ bin_PROGRAMS = hackermap
 noinst_LIBRARIES = libhackermap.a
 
 libhackermap_a_SOURCES = \
-	cortroller.cc
+	cortroller.cc \
+	interceptor.cc interceptor.hh
 
 hackermap_SOURCES = main.cc
 hackermap_LDADD = -lhackermap

@@ -20,3 +20,5 @@ src/libhackermap.a
 
 tests/*log
 tests/*trs
+
+tests/interc_base
