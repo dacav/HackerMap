@@ -1,6 +1,8 @@
 #include "../src/interceptor.hh"
 #include <cassert>
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 using namespace interc;
 
@@ -20,22 +22,29 @@ namespace {
 
 }
 
+#include <unistd.h>
+#include <sys/types.h>
+
 int main (int argc, char **argv)
 {
-    bool good = false;
+    const char *iface = argc < 2 ? "any" : argv[1];
+    Sniffer s(iface);
+
+    if (geteuid() != 0) {
+        // TODO: check user capabilities instead!
+        std::cerr << "Expected to fail. Run as root in order to sniff" << std::endl;
+        return 77;  // auto-tools recognized: xfail
+    }
 
     try {
-        /* "baracca" is hardly a network interface */
-        Sniffer("baracca").open_live();
+        std::cout << "trying with " << iface << std::endl;
+        s.open_live();
+        std::this_thread::sleep_for(
+            std::chrono::seconds(5)
+        );
     } catch (const Error &e) {
-        good = true;
+        std::cout << "phailed " << iface << ": " << e.what() << std::endl;
     }
-    assert(good);
-
-    Sniffer s0;
-    good = check_open(s0);
-    Sniffer s1(s0.iface);
-    good = check_open(s1);
 
     return 0;
 }

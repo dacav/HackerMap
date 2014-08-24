@@ -3,6 +3,7 @@
 
 #include <string>
 #include <stdexcept>
+#include <thread>
 
 #include <pcap.h>
 
@@ -22,10 +23,14 @@ namespace interc {
             ~Sniffer();
 
             void open_live();
+            void close();
+
+            void got_packet(const struct pcap_pkthdr &hdr, const u_char *bytes);
 
         private:
             char *errbuf;
             pcap_t *handle;
+            std::thread run_thread;
 
         public:
             const std::string iface;
