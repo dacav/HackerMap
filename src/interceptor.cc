@@ -28,6 +28,11 @@ namespace interc {
     {
     }
 
+    Sniffer::Sniffer (const std::string &_iface)
+      : Sniffer(_iface.c_str())
+    {
+    }
+
     Sniffer::Sniffer (const char *_iface)
       : errbuf(new char[PCAP_ERRBUF_SIZE]),
         handle(NULL),

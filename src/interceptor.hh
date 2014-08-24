@@ -17,6 +17,7 @@ namespace interc {
     class Sniffer {
         public:
             explicit Sniffer(const char *iface);
+            explicit Sniffer(const std::string &iface);
             Sniffer();
             ~Sniffer();
 

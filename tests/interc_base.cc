@@ -34,7 +34,7 @@ int main (int argc, char **argv)
 
     Sniffer s0;
     good = check_open(s0);
-    Sniffer s1(s0.iface.c_str());
+    Sniffer s1(s0.iface);
     good = check_open(s1);
 
     return 0;
