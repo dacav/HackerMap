@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-AM_CXXFLAGS = -I./ -std=c++11 -Wall -Werror
+AM_CXXFLAGS = -I./ -std=c++11 -Wall -Werror -pthread
 AM_LDFLAGS = -L./
 
 bin_PROGRAMS = hackermap
