@@ -67,7 +67,7 @@ namespace interc {
         }
 
 
-	run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
+        run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
     }
 
     void Sniffer::got_packet(const struct pcap_pkthdr &hdr, const u_char *bytes)
