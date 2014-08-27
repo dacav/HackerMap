@@ -20,10 +20,14 @@
 AM_CXXFLAGS = -std=c++11 -Wall -Werror -pthread
 AM_LDFLAGS = -L../src
 
-check_PROGRAMS = interc_base
+check_PROGRAMS = interc_base network_bytes
 
 TESTS = $(check_PROGRAMS)
 
 interc_base_SOURCES = interc_base.cc
 interc_base_LDADD = -lhackermap
 interc_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
+
+network_bytes_SOURCES = network_bytes.cc
+network_bytes_LDADD = -lhackermap
+network_bytes_DEPENDENCIES = $(srcdir)/../src/libhackermap.a

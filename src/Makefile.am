@@ -25,7 +25,8 @@ noinst_LIBRARIES = libhackermap.a
 
 libhackermap_a_SOURCES = \
 	cortroller.cc \
-	interceptor.cc interceptor.hh
+	interceptor.cc interceptor.hh \
+	network.cc network.hh
 
 hackermap_SOURCES = main.cc
 hackermap_LDADD = -lhackermap
