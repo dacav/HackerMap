@@ -2,6 +2,7 @@
 
 #include <pcap.h>
 #include <algorithm>
+#include <sstream>
 
 const unsigned SNAP_LEN = 512;
 const unsigned READ_TIMEOUT_MS = 1000;
@@ -30,6 +31,7 @@ namespace interc {
     Sniffer::Sniffer ()
       : errbuf(new char[PCAP_ERRBUF_SIZE]),
         handle(NULL),
+        linktype(0),
         iface(lookupdev_wrap(errbuf))
     {
     }
@@ -42,6 +44,7 @@ namespace interc {
     Sniffer::Sniffer (const char *_iface)
       : errbuf(new char[PCAP_ERRBUF_SIZE]),
         handle(NULL),
+        linktype(0),
         iface(_iface)
     {
     }
@@ -59,13 +62,31 @@ namespace interc {
 
     void Sniffer::open_live ()
     {
-        handle = pcap_open_live(iface.c_str(), SNAP_LEN, 0,
-            READ_TIMEOUT_MS, errbuf
-        );
+        handle = pcap_open_live(iface.c_str(), SNAP_LEN, 0, READ_TIMEOUT_MS, errbuf);
         if (handle == NULL) {
             throw interc::Error(errbuf);
         }
+        switch (pcap_activate(handle)) {
+            case 0:
+            case PCAP_WARNING:          // just a regular warning (log it?)
+            case PCAP_ERROR_ACTIVATED:  // already activated
+                break;
 
+            default:
+                throw interc::Error(pcap_geterr(handle));
+        }
+        switch (linktype = pcap_datalink(handle)) {
+            case DLT_EN10MB:        // - Ethernet
+            case DLT_IEEE802_11:    // - WiFi
+            case DLT_LINUX_SLL:     // - fake header for "any" interface
+                break;              // ...are supported. Go on.
+
+            default:
+                std::stringstream err;
+                err << "Unsupported network type: " << linktype
+                    << ". See http://www.tcpdump.org/linktypes.html";
+                throw interc::Error(err.str());
+        }
         run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
     }
 

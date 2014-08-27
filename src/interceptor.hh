@@ -33,6 +33,7 @@ namespace interc {
             char *errbuf;
             pcap_t *handle;
             std::thread run_thread;
+            int linktype;
 
         public:
             const std::string iface;
