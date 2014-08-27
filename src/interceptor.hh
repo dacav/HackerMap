@@ -1,6 +1,8 @@
 #ifndef INTERCEPTOR_HH
 #define INTERCEPTOR_HH
 
+#include <network.hh>
+
 #include <string>
 #include <stdexcept>
 #include <thread>
@@ -25,7 +27,7 @@ namespace interc {
             void open_live();
             void close();
 
-            void got_packet(const struct pcap_pkthdr &hdr, const u_char *bytes);
+            void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
 
         private:
             char *errbuf;

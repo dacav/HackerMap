@@ -20,7 +20,7 @@ namespace {
     void pcap_cback (u_char *user, const struct pcap_pkthdr *hdr,
                      const u_char *bytes)
     {
-        ((interc::Sniffer *)user)->got_packet(*hdr, bytes);
+        ((interc::Sniffer *)user)->got_packet(*hdr, net::Packet(bytes, hdr->len));
     }
 
 }
@@ -66,11 +66,10 @@ namespace interc {
             throw interc::Error(errbuf);
         }
 
-
         run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
     }
 
-    void Sniffer::got_packet(const struct pcap_pkthdr &hdr, const u_char *bytes)
+    void Sniffer::got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt)
     {
     }
 
