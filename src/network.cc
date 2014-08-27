@@ -8,14 +8,14 @@ namespace net {
     {
     }
 
-    template<> const net::eth::header * const Packet::get() const
+    template<> const net::eth::header & Packet::get() const
     {
         const unsigned start = 0;
         const unsigned end = start + sizeof(net::eth::header);
         if (end > size) {
             throw net::Error("Packet size beyond boundaries"); 
         }
-        return (const net::eth::header * const) bytes;
+        return *((const net::eth::header * const) bytes + start);
     }
 
 }

@@ -17,8 +17,8 @@ void good ()
     Packet p(buf, sizeof(buf));
     auto hdr = p.get<eth::header>();
     for (int i = 0; i < 3; i ++) {
-        cout << hex << (int)hdr->dhost[i] << endl;
-        assert(hdr->dhost[i] == i + 1);
+        cout << hex << (int)hdr.dhost[i] << endl;
+        assert(hdr.dhost[i] == i + 1);
     }
 }
 

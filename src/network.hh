@@ -45,7 +45,7 @@ namespace net {
             const uint8_t *bytes;
             const size_t size;
 
-            template<typename T> T const * const get() const;
+            template<typename T> const T & get() const;
     };
 
 }
