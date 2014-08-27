@@ -8,6 +8,8 @@
 
 namespace net {
 
+    void check_datalink_type(int linktype);
+
     namespace eth {
         const unsigned ADDR_LEN = 6;
 

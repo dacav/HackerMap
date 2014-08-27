@@ -2,7 +2,6 @@
 
 #include <pcap.h>
 #include <algorithm>
-#include <sstream>
 
 const unsigned SNAP_LEN = 512;
 const unsigned READ_TIMEOUT_MS = 1000;
@@ -76,18 +75,9 @@ namespace interc {
             default:
                 throw interc::Error(pcap_geterr(handle));
         }
-        switch (linktype = pcap_datalink(handle)) {
-            case DLT_EN10MB:        // - Ethernet
-            case DLT_IEEE802_11:    // - WiFi
-            case DLT_LINUX_SLL:     // - fake header for "any" interface
-                break;              // ...are supported. Go on.
 
-            default:
-                std::stringstream err;
-                err << "Unsupported network type: " << linktype
-                    << ". See http://www.tcpdump.org/linktypes.html";
-                throw interc::Error(err.str());
-        }
+        linktype = pcap_datalink(handle);
+        net::check_datalink_type(linktype);
         run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
     }
 

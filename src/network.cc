@@ -1,6 +1,24 @@
 #include <network.hh>
 
+#include <sstream>
+
 namespace net {
+
+    void check_datalink_type(int linktype)
+    {
+        switch (linktype) {         // We support:
+            case DLT_EN10MB:        //  - Ethernet
+            case DLT_IEEE802_11:    //  - WiFi
+            case DLT_LINUX_SLL:     //  - fake header for "any" interface
+                break;              // ...are supported. Go on.
+
+            default:
+                std::stringstream err;
+                err << "Unsupported network type: " << linktype
+                    << ". See http://www.tcpdump.org/linktypes.html";
+                throw Error(err.str());
+        }
+    }
 
     Packet::Packet(int lt, const uint8_t *b, size_t s)
       : linktype(lt),
