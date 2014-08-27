@@ -1,4 +1,5 @@
-#include "../src/network.hh"
+#include <network.hh>
+
 #include <cstdint>
 #include <cassert>
 #include <iostream>

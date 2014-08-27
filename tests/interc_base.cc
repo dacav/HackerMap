@@ -1,4 +1,5 @@
-#include "../src/interceptor.hh"
+#include <interceptor.hh>
+
 #include <cassert>
 #include <iostream>
 #include <thread>

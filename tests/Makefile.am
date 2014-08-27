@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-AM_CXXFLAGS = -std=c++11 -Wall -Werror -pthread
+AM_CXXFLAGS = -I../src -std=c++11 -Wall -Werror -pthread
 AM_LDFLAGS = -L../src
 
 check_PROGRAMS = interc_base network_bytes
