@@ -28,6 +28,7 @@ namespace interc {
             void close();
 
             void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
+            int get_linktype() const;
 
         private:
             char *errbuf;

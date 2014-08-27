@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <netinet/in.h>
 #include <stdexcept>
+#include <pcap.h>
 
 namespace net {
 
@@ -14,6 +15,19 @@ namespace net {
             uint8_t dhost[ADDR_LEN];
             uint8_t shost[ADDR_LEN];
             uint16_t type;
+        };
+    }
+
+    namespace any {
+        const unsigned ADDR_LEN = 8;
+
+        // http://www.tcpdump.org/linktypes/LINKTYPE_LINUX_SLL.html
+        struct header {
+            uint16_t type;
+            uint16_t arp;
+            uint16_t addrlen;
+            uint8_t addr[ADDR_LEN];
+            uint16_t protocol;
         };
     }
 
@@ -40,12 +54,17 @@ namespace net {
 
     class Packet {
         public:
-            Packet(const uint8_t *bytes, size_t size);
+            Packet(int linktype, const uint8_t *bytes, size_t size);
 
-            const uint8_t *bytes;
+            const int linktype;
+            const uint8_t * const bytes;
             const size_t size;
 
             template<typename T> const T & get() const;
+
+        private:
+            void datalink_require(int linktype) const;
+            template<typename T> const T & chunk_require(off_t start) const;
     };
 
 }

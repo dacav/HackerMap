@@ -21,7 +21,8 @@ namespace {
     void pcap_cback (u_char *user, const struct pcap_pkthdr *hdr,
                      const u_char *bytes)
     {
-        ((interc::Sniffer *)user)->got_packet(*hdr, net::Packet(bytes, hdr->len));
+        auto snf = reinterpret_cast<interc::Sniffer *>(user);
+        snf->got_packet(*hdr, net::Packet(snf->get_linktype(), bytes, hdr->len));
     }
 
 }
@@ -90,7 +91,12 @@ namespace interc {
         run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
     }
 
-    void Sniffer::got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt)
+    int Sniffer::get_linktype () const
+    {
+        return linktype;
+    }
+
+    void Sniffer::got_packet (const struct pcap_pkthdr &hdr, const net::Packet &pkt)
     {
     }
 

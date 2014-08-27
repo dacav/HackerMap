@@ -4,6 +4,8 @@
 #include <cassert>
 #include <iostream>
 
+#include <pcap.h>
+
 using namespace net;
 using namespace std;
 
@@ -15,11 +17,11 @@ void good ()
         buf[i] = i + 1;
     }
 
-    Packet p(buf, sizeof(buf));
-    auto hdr = p.get<eth::header>();
+    Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
+    auto hdr = p.get<any::header>();
     for (int i = 0; i < 3; i ++) {
-        cout << hex << (int)hdr.dhost[i] << endl;
-        assert(hdr.dhost[i] == i + 1);
+        cout << hex << hdr.type << endl;
+        assert(hdr.type == 0x0201);
     }
 }
 
@@ -32,13 +34,11 @@ void bad ()
         buf[i] = i + 1;
     }
 
-    Packet p(buf, sizeof(buf));
+    Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
     try {
-        p.get<eth::header>();
+        p.get<any::header>();
         assert(false);
     } catch (Error &e) {
-        /* Exception because buffer size is below size of ethernet
-         * header. */
         cout << "Got expected error: " << e.what() << ". Good" << endl;
     }
 }
