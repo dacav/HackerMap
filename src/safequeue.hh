@@ -6,11 +6,12 @@
 #include <condition_variable>
 
 namespace utils {
-
+  // The implementation of this class must be in the header because templates
   template <typename T> 
   class safequeue
   {
   public:
+    // Pushes an item into the queue and notify one of the waiting threads
     void push(const T& item){
       std::unique_lock<std::mutex> lock(mutex);
       queue.push(item);
@@ -18,6 +19,8 @@ namespace utils {
       waiting.notify_one();
     }
 
+    //Waits until there is something in the queue and pops it
+    //The lock is managed by the the condition variable
     T pop(){
       std::unique_lock<std::mutex> lock(mutex);
       while(queue.empty()){

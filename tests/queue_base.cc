@@ -11,6 +11,10 @@ using namespace utils;
 //Number of pushes per burst
 #define PRODUCER_RATE 10000
 
+/*
+Right now this test does not take any parameter
+Is it possible to run this test automatically with different parameters?
+ */
 int main(int argc, char** argv){
   safequeue<int> q;
 
@@ -27,7 +31,8 @@ int main(int argc, char** argv){
       int cur = -1;
       while(cur+1<PRODUCER_ITERATIONS * PRODUCER_RATE){
         int el=q.pop();
-        assert(el==cur+1);
+        //check if we are popping in the right order
+        assert(el==cur+1); 
         cur=el;
         std::cout<<el<<std::endl;
       }
