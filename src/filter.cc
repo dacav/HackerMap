@@ -9,5 +9,4 @@ namespace filter {
     return true;
   }
 
-
 }
