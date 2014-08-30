@@ -3,6 +3,11 @@
 
 namespace lookup {
 
+    Mapping::Mapping(const std::string& _address, Coords _coords)
+      : address(_address), coords(_coords)
+    {
+    }
+    
     Coords::Coords(double lg, double lt)
       : longitude(lg),
         latitude(lt)
@@ -26,7 +31,7 @@ namespace lookup {
           while(active){
             try{
               std::string address = messages.pop();
-              output->push(lookup(address));
+              output->push(Mapping(address,lookup(address)));
             }catch(utils::Terminated &t){
               active=false;
             }
@@ -37,7 +42,7 @@ namespace lookup {
         messages.terminate();
     }
 
-    void GeoIp::set_output(utils::SafeQueue<Coords>* output_queue){
+    void GeoIp::set_output(utils::SafeQueue<Mapping>* output_queue){
         output=output_queue;
     }
     void GeoIp::join(){

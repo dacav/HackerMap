@@ -14,19 +14,26 @@ namespace lookup {
         Coords(double longitude, double latitude);
     };
 
+    struct Mapping {
+      std::string address;
+      Coords coords;
+      Mapping(const std::string& address, Coords coords);
+    };
+
+
     class GeoIp {
         public:
             GeoIp(const std::string &server);
             //Coords lookup(net::ipv4...);
             void run();
             void terminate();
-            void set_output(utils::SafeQueue<Coords>* output_queue);
+            void set_output(utils::SafeQueue<Mapping>* output_queue);
             const std::string server;
             utils::SafeQueue<std::string> messages;
             void join();
         private:
             Coords lookup(const std::string &address);
-            utils::SafeQueue<Coords>* output;
+            utils::SafeQueue<Mapping>* output;
             std::thread my_thread;
     };
 
