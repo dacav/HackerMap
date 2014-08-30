@@ -1,4 +1,7 @@
-CHANGED=`git diff --cached --name-only`
-echo "Fixing style for ${CHANGED}"
+#!/bin/sh
 
-astyle --suffix=none --style=knf --indent=spaces=4 --indent-namespaces --indent-modifiers ${CHANGED}
+ASTYLE='astyle --suffix=none --style=knf --indent=spaces=4 --indent-namespaces --indent-modifiers'
+for fn in `git diff --cached --name-only | egrep '\.(cc|hh)$'`; do
+  echo "Fixing style for ${fn}"
+  $ASTYLE $fn
+done
