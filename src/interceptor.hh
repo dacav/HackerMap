@@ -32,18 +32,19 @@ namespace interc
     class Sniffer
     {
         public:
-            Sniffer();
+            Sniffer(utils::SafeQueue<Event> *outqueue = nullptr);
             ~Sniffer();
 
             void open_live(const std::string &iface);
             void open_live(const char *iface);
             void open_offline(const std::string &fn);
+            void open_offline(const char *fn);
             void close();
 
             void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
             int get_linktype() const;
 
-            void set_output(utils::SafeQueue<Event> *outqueue);
+            void set_output(utils::SafeQueue<Event> * const outqueue);
 
         private:
             char *errbuf;
@@ -53,6 +54,7 @@ namespace interc
             utils::SafeQueue<Event> *outqueue;
 
             void open (pcap_t *handle);
+            bool live;
     };
 
 }

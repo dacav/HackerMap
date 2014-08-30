@@ -1,4 +1,6 @@
 #include <network.hh>
+#include <interceptor.hh>
+#include <safequeue.hh>
 
 #include <cstdint>
 #include <cassert>
@@ -6,8 +8,9 @@
 
 #include <pcap.h>
 
-using namespace net;
 using namespace std;
+using namespace interc;
+using namespace utils;
 
 /* This tests the case in which we ask an item from the header */
 void good ()
@@ -17,8 +20,8 @@ void good ()
         buf[i] = i + 1;
     }
 
-    Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
-    auto hdr = p.get<any::header>();
+    net::Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
+    auto hdr = p.get<net::any::header>();
     for (int i = 0; i < 3; i ++) {
         cout << hex << hdr.type << endl;
         assert(hdr.type == 0x0201);
@@ -34,15 +37,21 @@ void bad ()
         buf[i] = i + 1;
     }
 
-    Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
+    net::Packet p(DLT_LINUX_SLL, buf, sizeof(buf));
     try {
-        p.get<any::header>();
+        p.get<net::any::header>();
         assert(false);
-    } catch (Error &e) {
+    } catch (net::Error &e) {
         cout << "Got expected error: " << e.what() << ". Good" << endl;
     }
 }
 
+void ugly()
+{
+    SafeQueue<Event> queue;
+    Sniffer(&queue).open_offline("./dump.pcap");
+
+}
 
 int main (int argc, char **argv)
 {

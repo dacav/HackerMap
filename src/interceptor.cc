@@ -1,7 +1,7 @@
 #include <interceptor.hh>
-#include <iostream>
 #include <pcap.h>
 #include <algorithm>
+#include <string>
 
 const unsigned SNAP_LEN = 512;
 const unsigned READ_TIMEOUT_MS = 1000;
@@ -30,11 +30,11 @@ namespace
 namespace interc
 {
 
-    Sniffer::Sniffer ()
+    Sniffer::Sniffer(utils::SafeQueue<Event> *oq)
         : errbuf(new char[PCAP_ERRBUF_SIZE]),
           handle(NULL),
           linktype(0),
-          outqueue(nullptr)
+          outqueue(oq)
     {
     }
 
@@ -45,9 +45,7 @@ namespace interc
 
     Sniffer::~Sniffer ()
     {
-        if (run_thread.joinable()) {
-            close();
-        }
+        close();
         if (handle != NULL) {
             pcap_close(handle);
         }
@@ -61,20 +59,27 @@ namespace interc
 
     void Sniffer::open_offline(const std::string &fn)
     {
-        open(pcap_open_offline(fn.c_str(), errbuf));
+        open_offline(fn.c_str());
+    }
+
+    void Sniffer::open_offline(const char *fn)
+    {
+        open(pcap_open_offline(fn, errbuf));
+        live = false;
     }
 
     void Sniffer::open_live (const char *iface)
     {
         open(pcap_open_live(iface, SNAP_LEN, 0, READ_TIMEOUT_MS, errbuf));
+        live = true;
     }
 
-    void Sniffer::open (pcap_t *handle)
+    void Sniffer::open (pcap_t *hnd)
     {
-        if (handle == NULL) {
+        if (hnd == NULL) {
             throw interc::Error(errbuf);
         }
-        switch (pcap_activate(handle)) {
+        switch (pcap_activate(hnd)) {
         case 0:
         case PCAP_WARNING:          // just a regular warning (log it?)
         case PCAP_ERROR_ACTIVATED:  // already activated
@@ -84,6 +89,7 @@ namespace interc
             throw interc::Error(pcap_geterr(handle));
         }
 
+        handle = hnd;
         linktype = pcap_datalink(handle);
         net::check_datalink_type(linktype);
         run_thread = std::thread(pcap_loop, handle, -1, pcap_cback, (u_char *)this);
@@ -104,15 +110,15 @@ namespace interc
 
     void Sniffer::close ()
     {
-        if (handle == NULL) {
-            throw interc::Error("Not opened");
+        if (run_thread.joinable()) {
+            if (live && handle != NULL) {
+                pcap_breakloop(handle);
+            }
+            run_thread.join();
         }
-
-        pcap_breakloop(handle);
-        run_thread.join();
     }
 
-    void Sniffer::set_output(utils::SafeQueue<Event> *outqueue)
+    void Sniffer::set_output(utils::SafeQueue<Event> * const outqueue)
     {
         this->outqueue = outqueue;
     }
