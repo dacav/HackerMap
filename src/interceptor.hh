@@ -2,6 +2,7 @@
 #define INTERCEPTOR_HH
 
 #include <network.hh>
+#include <safequeue.hh>
 
 #include <string>
 #include <stdexcept>
@@ -15,6 +16,15 @@ namespace interc {
         public:
             Error(const char *msg) : std::runtime_error(msg) {}
             Error(const std::string & msg) : std::runtime_error(msg) {}
+    };
+
+    struct Event {
+        enum Type {
+            TCP_CONNECT = 0
+        } type;
+        const std::string host;
+
+        Event(Type type, const std::string &host);
     };
 
     class Sniffer {
@@ -35,6 +45,7 @@ namespace interc {
             pcap_t *handle;
             std::thread run_thread;
             int linktype;
+            utils::SafeQueue<Event> *outqueue;
 
         public:
             const std::string iface;
