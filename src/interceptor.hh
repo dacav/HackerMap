@@ -39,7 +39,8 @@ namespace interc {
 
             void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
             int get_linktype() const;
-
+      
+           void set_output(utils::SafeQueue<Event> *outqueue);
         private:
             char *errbuf;
             pcap_t *handle;
