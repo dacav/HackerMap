@@ -29,6 +29,7 @@ libhackermap_a_SOURCES = \
 	interceptor.cc interceptor.hh \
 	network.cc network.hh \
 	filter.cc filter.hh \
+	visualizer.cc visualizer.hh \
 	lookup.cc lookup.hh
 
 hackermap_SOURCES = main.cc
