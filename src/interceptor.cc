@@ -1,5 +1,5 @@
 #include <interceptor.hh>
-
+#include <iostream>
 #include <pcap.h>
 #include <algorithm>
 
@@ -110,5 +110,9 @@ namespace interc {
         pcap_breakloop(handle);
         run_thread.join();
     }
+
+  void Sniffer::set_output(utils::SafeQueue<Event> *outqueue){
+    this->outqueue = outqueue;
+  }
 
 }

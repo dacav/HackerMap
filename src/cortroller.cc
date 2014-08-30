@@ -53,8 +53,8 @@ namespace core {
 
     void Core::terminate()
     {
-        lookup_out->terminate();
-        view_out->terminate();
+        lookup_in.terminate();
+        interc_in.terminate();
     }
 
     void Core::join()
