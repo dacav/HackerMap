@@ -16,13 +16,15 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-AM_CXXFLAGS = -I../src -std=c++11 -Wall -Werror -pthread
+AM_CXXFLAGS = -I../src -std=c++11 -Wall -Werror -pthread -g
 AM_LDFLAGS = -L../src
 
 check_PROGRAMS = \
 	interc_base \
 	network_bytes \
-	queue_base
+	queue_base \
+	visualizer_base \
+	lookup_base
 
 TESTS = $(check_PROGRAMS)
 
@@ -37,3 +39,11 @@ interc_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
 network_bytes_SOURCES = network_bytes.cc
 network_bytes_LDADD = -lhackermap
 network_bytes_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
+
+lookup_base_SOURCES = lookup_base.cc
+lookup_base_LDADD = -lhackermap
+lookup_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
+
+visualizer_base_SOURCES = visualizer_base.cc
+visualizer_base_LDADD = -lhackermap
+visualizer_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
