@@ -12,7 +12,7 @@ int main (int argc, char **argv)
   filter::Filter filter;
   lookup::GeoIp look("www.dacavfuffa.org");
   core::Core core(filter);
-  interc::Sniffer interceptor;
+  interc::Sniffer interceptor("lo");
   view::Visualizer visual;
   interceptor.set_output(&core.interc_in);
   core.set_lookup_output(&look.messages);
