@@ -54,25 +54,25 @@ namespace net
 
     class Error: public std::runtime_error
     {
-      public:
-        Error(const char *msg) : std::runtime_error(msg) {}
-        Error(const std::string & msg) : std::runtime_error(msg) {}
+        public:
+            Error(const char *msg) : std::runtime_error(msg) {}
+            Error(const std::string & msg) : std::runtime_error(msg) {}
     };
 
     class Packet
     {
-      public:
-        Packet(int linktype, const uint8_t *bytes, size_t size);
+        public:
+            Packet(int linktype, const uint8_t *bytes, size_t size);
 
-        const int linktype;
-        const uint8_t * const bytes;
-        const size_t size;
+            const int linktype;
+            const uint8_t * const bytes;
+            const size_t size;
 
-        template<typename T> const T & get() const;
+            template<typename T> const T & get() const;
 
-      private:
-        void datalink_require(int linktype) const;
-        template<typename T> const T & chunk_require(off_t start) const;
+        private:
+            void datalink_require(int linktype) const;
+            template<typename T> const T & chunk_require(off_t start) const;
     };
 
 }
