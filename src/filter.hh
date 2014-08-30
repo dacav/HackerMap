@@ -10,9 +10,9 @@ namespace filter
 {
     class Filter
     {
-      public:
-        Filter();
-        bool check (const interc::Event &event);
+        public:
+            Filter();
+            bool check (const interc::Event &event);
     };
 }
 

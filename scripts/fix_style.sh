@@ -1,6 +1,6 @@
 #!/bin/sh
 
-ASTYLE='astyle --suffix=none --style=knf --indent=spaces=4 --indent-namespaces --indent-modifiers'
+ASTYLE='astyle --suffix=none --style=linux --indent=spaces=4 --indent-namespaces --indent-classes'
 if [ -z $1 ]; then
   for fn in `git diff --cached --name-only | egrep '\.(cc|hh)$'`; do
     save="$(dirname ${fn})/.$(basename ${fn}).non-staged"
@@ -8,7 +8,7 @@ if [ -z $1 ]; then
     git co $fn
     $ASTYLE $fn
     git add $fn
-    git apply < $save
+    [ `wc -c < $save` = 0 ] || git apply < $save
   done
 else
   for fn in $@; do

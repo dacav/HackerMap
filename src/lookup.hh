@@ -24,19 +24,19 @@ namespace lookup
 
     class GeoIp
     {
-      public:
-        GeoIp(const std::string &server);
-        //Coords lookup(net::ipv4...);
-        void run();
-        void terminate();
-        void set_output(utils::SafeQueue<Mapping>* output_queue);
-        const std::string server;
-        utils::SafeQueue<std::string> messages;
-        void join();
-      private:
-        Coords lookup(const std::string &address);
-        utils::SafeQueue<Mapping>* output;
-        std::thread my_thread;
+        public:
+            GeoIp(const std::string &server);
+            //Coords lookup(net::ipv4...);
+            void run();
+            void terminate();
+            void set_output(utils::SafeQueue<Mapping>* output_queue);
+            const std::string server;
+            utils::SafeQueue<std::string> messages;
+            void join();
+        private:
+            Coords lookup(const std::string &address);
+            utils::SafeQueue<Mapping>* output;
+            std::thread my_thread;
     };
 
 }

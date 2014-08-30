@@ -6,19 +6,19 @@ namespace view
 {
     class DataPoint
     {
-      public:
-        const lookup::Coords coords;
-        DataPoint(const lookup::Coords& coo);
+        public:
+            const lookup::Coords coords;
+            DataPoint(const lookup::Coords& coo);
     };
 
     class Visualizer
     {
-      public:
-        void run();
-        void terminate();
-        void join();
-        utils::SafeQueue<DataPoint> messages;
-        std::thread my_thread;
+        public:
+            void run();
+            void terminate();
+            void join();
+            utils::SafeQueue<DataPoint> messages;
+            std::thread my_thread;
     };
 }
 
