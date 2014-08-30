@@ -2,6 +2,7 @@
 #define INTERCEPTOR_HH
 
 #include <network.hh>
+#include <safequeue.hh>
 
 #include <string>
 #include <stdexcept>
@@ -9,35 +10,49 @@
 
 #include <pcap.h>
 
-namespace interc {
+namespace interc
+{
 
-    class Error: public std::runtime_error {
-        public:
-            Error(const char *msg) : std::runtime_error(msg) {}
-            Error(const std::string & msg) : std::runtime_error(msg) {}
+    class Error: public std::runtime_error
+    {
+      public:
+        Error(const char *msg) : std::runtime_error(msg) {}
+        Error(const std::string & msg) : std::runtime_error(msg) {}
     };
 
-    class Sniffer {
-        public:
-            explicit Sniffer(const char *iface);
-            explicit Sniffer(const std::string &iface);
-            Sniffer();
-            ~Sniffer();
+    struct Event {
+        enum Type {
+            TCP_CONNECT = 0
+        } type;
+        const std::string host;
 
-            void open_live();
-            void close();
+        Event(Type type, const std::string &host);
+    };
 
-            void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
-            int get_linktype() const;
+    class Sniffer
+    {
+      public:
+        explicit Sniffer(const char *iface);
+        explicit Sniffer(const std::string &iface);
+        Sniffer();
+        ~Sniffer();
 
-        private:
-            char *errbuf;
-            pcap_t *handle;
-            std::thread run_thread;
-            int linktype;
+        void open_live();
+        void close();
 
-        public:
-            const std::string iface;
+        void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
+        int get_linktype() const;
+
+        void set_output(utils::SafeQueue<Event> *outqueue);
+      private:
+        char *errbuf;
+        pcap_t *handle;
+        std::thread run_thread;
+        int linktype;
+        utils::SafeQueue<Event> *outqueue;
+
+      public:
+        const std::string iface;
     };
 
 }

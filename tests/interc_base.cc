@@ -7,7 +7,8 @@
 
 using namespace interc;
 
-namespace {
+namespace
+{
 
     bool check_open (Sniffer &sn)
     {

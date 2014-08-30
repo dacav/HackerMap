@@ -1,12 +1,13 @@
 #include <interceptor.hh>
-
+#include <iostream>
 #include <pcap.h>
 #include <algorithm>
 
 const unsigned SNAP_LEN = 512;
 const unsigned READ_TIMEOUT_MS = 1000;
 
-namespace {
+namespace
+{
 
     const char *lookupdev_wrap(char *errbuf)
     {
@@ -26,26 +27,34 @@ namespace {
 
 }
 
-namespace interc {
+namespace interc
+{
 
     Sniffer::Sniffer ()
-      : errbuf(new char[PCAP_ERRBUF_SIZE]),
-        handle(NULL),
-        linktype(0),
-        iface(lookupdev_wrap(errbuf))
+        : errbuf(new char[PCAP_ERRBUF_SIZE]),
+          handle(NULL),
+          linktype(0),
+          outqueue(nullptr),
+          iface(lookupdev_wrap(errbuf))
     {
     }
 
     Sniffer::Sniffer (const std::string &_iface)
-      : Sniffer(_iface.c_str())
+        : Sniffer(_iface.c_str())
+    {
+    }
+
+    Event::Event(Type t, const std::string &h)
+        : type(t), host(h)
     {
     }
 
     Sniffer::Sniffer (const char *_iface)
-      : errbuf(new char[PCAP_ERRBUF_SIZE]),
-        handle(NULL),
-        linktype(0),
-        iface(_iface)
+        : errbuf(new char[PCAP_ERRBUF_SIZE]),
+          handle(NULL),
+          linktype(0),
+          outqueue(nullptr),
+          iface(_iface)
     {
     }
 
@@ -67,13 +76,13 @@ namespace interc {
             throw interc::Error(errbuf);
         }
         switch (pcap_activate(handle)) {
-            case 0:
-            case PCAP_WARNING:          // just a regular warning (log it?)
-            case PCAP_ERROR_ACTIVATED:  // already activated
-                break;
+        case 0:
+        case PCAP_WARNING:          // just a regular warning (log it?)
+        case PCAP_ERROR_ACTIVATED:  // already activated
+            break;
 
-            default:
-                throw interc::Error(pcap_geterr(handle));
+        default:
+            throw interc::Error(pcap_geterr(handle));
         }
 
         linktype = pcap_datalink(handle);
@@ -88,6 +97,10 @@ namespace interc {
 
     void Sniffer::got_packet (const struct pcap_pkthdr &hdr, const net::Packet &pkt)
     {
+        if (outqueue != nullptr) {
+            Event e(Event::Type::TCP_CONNECT, "127.0.0.1");
+            outqueue->push(e);
+        }
     }
 
     void Sniffer::close ()
@@ -98,6 +111,11 @@ namespace interc {
 
         pcap_breakloop(handle);
         run_thread.join();
+    }
+
+    void Sniffer::set_output(utils::SafeQueue<Event> *outqueue)
+    {
+        this->outqueue = outqueue;
     }
 
 }

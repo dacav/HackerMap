@@ -6,11 +6,13 @@
 #include <stdexcept>
 #include <pcap.h>
 
-namespace net {
+namespace net
+{
 
     void check_datalink_type(int linktype);
 
-    namespace eth {
+    namespace eth
+    {
         const unsigned ADDR_LEN = 6;
 
         struct header {
@@ -20,7 +22,8 @@ namespace net {
         };
     }
 
-    namespace any {
+    namespace any
+    {
         const unsigned ADDR_LEN = 8;
 
         // http://www.tcpdump.org/linktypes/LINKTYPE_LINUX_SLL.html
@@ -33,7 +36,8 @@ namespace net {
         };
     }
 
-    namespace ipv4 {
+    namespace ipv4
+    {
         struct header {
             uint8_t version;
             uint8_t tos;
@@ -48,25 +52,27 @@ namespace net {
         };
     }
 
-    class Error: public std::runtime_error {
-        public:
-            Error(const char *msg) : std::runtime_error(msg) {}
-            Error(const std::string & msg) : std::runtime_error(msg) {}
+    class Error: public std::runtime_error
+    {
+      public:
+        Error(const char *msg) : std::runtime_error(msg) {}
+        Error(const std::string & msg) : std::runtime_error(msg) {}
     };
 
-    class Packet {
-        public:
-            Packet(int linktype, const uint8_t *bytes, size_t size);
+    class Packet
+    {
+      public:
+        Packet(int linktype, const uint8_t *bytes, size_t size);
 
-            const int linktype;
-            const uint8_t * const bytes;
-            const size_t size;
+        const int linktype;
+        const uint8_t * const bytes;
+        const size_t size;
 
-            template<typename T> const T & get() const;
+        template<typename T> const T & get() const;
 
-        private:
-            void datalink_require(int linktype) const;
-            template<typename T> const T & chunk_require(off_t start) const;
+      private:
+        void datalink_require(int linktype) const;
+        template<typename T> const T & chunk_require(off_t start) const;
     };
 
 }
