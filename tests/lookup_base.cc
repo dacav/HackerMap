@@ -9,7 +9,7 @@ int main (int argc, char **argv)
 {
   lookup::GeoIp geo("geoip.example.com");
   utils::SafeQueue<lookup::Mapping> queue;
-  //  geo.set_output(&queue);
+  geo.set_output(&queue);
   geo.run();
   for(int i=0;i<100;i++){
     geo.messages.push("www.google.it");    

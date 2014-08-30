@@ -25,3 +25,4 @@ tests/interc_base
 tests/network_bytes
 tests/queue_base
 tests/lookup_base
+tests/visualizer_base
