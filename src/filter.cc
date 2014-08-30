@@ -5,7 +5,7 @@ namespace filter {
 
   }
 
-  bool Filter::filter(ip current_ip){
+  bool Filter::check(const interc::Event &event) {
     return true;
   }
 

@@ -20,7 +20,10 @@ namespace core {
             bool active = true;
             while (active) {
                 try {
-                    lookup_out->push(interc_in.pop().host);
+                    auto event = interc_in.pop();
+                    if (filter.check(event)) {
+                        lookup_out->push(event.host);
+                    }
                 } catch (utils::Terminated &) {
                     active = false;
                 }

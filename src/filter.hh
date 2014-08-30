@@ -1,16 +1,16 @@
 #ifndef FILTER_HH
 #define FILTER_HH
-#include "safequeue.hh"
-#include <thread>
 
-#define ip int
+#include <safequeue.hh>
+#include <interceptor.hh>
+
+#include <thread>
 
 namespace filter {
   class Filter {
   public:
     Filter();
-    bool filter(ip current_ip);
-  private:
+    bool check (const interc::Event &event);
   };
 }
 
