@@ -1,0 +1,2 @@
+The dump.pcap file contains a pcap format dump taken while contacting
+localhost with netcat, port 9000, on the loopback interface.
