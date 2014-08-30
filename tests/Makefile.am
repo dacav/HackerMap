@@ -16,7 +16,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
-AM_CXXFLAGS = -I../src -std=c++11 -Wall -Werror -pthread
+AM_CXXFLAGS = -I../src -std=c++11 -Wall -Werror -pthread -g
 AM_LDFLAGS = -L../src
 
 check_PROGRAMS = \
