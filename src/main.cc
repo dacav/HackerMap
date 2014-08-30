@@ -12,7 +12,7 @@ int main (int argc, char **argv)
     filter::Filter filter;
     lookup::GeoIp look("www.dacavfuffa.org");
     core::Core core(filter);
-    interc::Sniffer interceptor("lo");
+    interc::Sniffer interceptor;
     view::Visualizer visual;
     interceptor.set_output(&core.interc_in);
     core.set_lookup_output(&look.messages);
@@ -21,7 +21,7 @@ int main (int argc, char **argv)
     look.run();
     visual.run();
     core.run();
-    interceptor.open_live();
+    interceptor.open_live("lo");
     std::this_thread::sleep_for(std::chrono::milliseconds(10000));
     std::cout << "Hello, world! This is " PACKAGE_NAME " version "
               PACKAGE_VERSION << std::endl;

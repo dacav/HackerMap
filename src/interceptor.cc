@@ -34,27 +34,12 @@ namespace interc
         : errbuf(new char[PCAP_ERRBUF_SIZE]),
           handle(NULL),
           linktype(0),
-          outqueue(nullptr),
-          iface(lookupdev_wrap(errbuf))
-    {
-    }
-
-    Sniffer::Sniffer (const std::string &_iface)
-        : Sniffer(_iface.c_str())
+          outqueue(nullptr)
     {
     }
 
     Event::Event(Type t, const std::string &h)
         : type(t), host(h)
-    {
-    }
-
-    Sniffer::Sniffer (const char *_iface)
-        : errbuf(new char[PCAP_ERRBUF_SIZE]),
-          handle(NULL),
-          linktype(0),
-          outqueue(nullptr),
-          iface(_iface)
     {
     }
 
@@ -69,9 +54,23 @@ namespace interc
         delete[] errbuf;
     }
 
-    void Sniffer::open_live ()
+    void Sniffer::open_live (const std::string &iface)
     {
-        handle = pcap_open_live(iface.c_str(), SNAP_LEN, 0, READ_TIMEOUT_MS, errbuf);
+        open_live(iface.c_str());
+    }
+
+    void Sniffer::open_offline(const std::string &fn)
+    {
+        open(pcap_open_offline(fn.c_str(), errbuf));
+    }
+
+    void Sniffer::open_live (const char *iface)
+    {
+        open(pcap_open_live(iface, SNAP_LEN, 0, READ_TIMEOUT_MS, errbuf));
+    }
+
+    void Sniffer::open (pcap_t *handle)
+    {
         if (handle == NULL) {
             throw interc::Error(errbuf);
         }
