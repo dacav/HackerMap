@@ -59,6 +59,11 @@ dnl           man/Makefile
 dnl           po/Makefile.in
 dnl           contrib/Makefile
 
+AC_CHECK_HEADERS([pcap/pcap.h], [], [AC_MSG_ERROR([missing header for pcap library])])
+AC_SEARCH_LIBS([pcap_lookupdev], [pcap], [], [AC_MSG_ERROR([cannot link libpcap library])])
+
+AC_SEARCH_LIBS([pthread_create], [pthread], [], [AC_MSG_ERROR([need pthread])])
+
 AC_CONFIG_FILES([Makefile
     src/Makefile
     tests/Makefile])

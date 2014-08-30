@@ -17,7 +17,7 @@
 # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
 #
 
-AM_CXXFLAGS = -I./ -std=c++11 -Wall -Werror
+AM_CXXFLAGS = -I./ -std=c++11 -Wall -Werror -pthread
 AM_LDFLAGS = -L./
 
 bin_PROGRAMS = hackermap
@@ -25,7 +25,9 @@ noinst_LIBRARIES = libhackermap.a
 
 libhackermap_a_SOURCES = \
 	cortroller.cc \
-	safequeue.hh
+	safequeue.hh \
+	interceptor.cc interceptor.hh \
+	network.cc network.hh
 
 hackermap_SOURCES = main.cc
 hackermap_LDADD = -lhackermap
