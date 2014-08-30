@@ -28,6 +28,7 @@ libhackermap_a_SOURCES = \
 	safequeue.hh \
 	interceptor.cc interceptor.hh \
 	network.cc network.hh \
+	filter.cc filter.hh \
 	lookup.cc lookup.hh
 
 hackermap_SOURCES = main.cc
