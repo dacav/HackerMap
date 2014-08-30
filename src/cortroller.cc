@@ -2,12 +2,13 @@
 
 #include <cassert>
 
-namespace core {
+namespace core
+{
 
     Core::Core(filter::Filter &flt)
-      : filter(flt),
-        lookup_out(nullptr),
-        view_out(nullptr)
+        : filter(flt),
+          lookup_out(nullptr),
+          view_out(nullptr)
     {
     }
 
@@ -16,7 +17,7 @@ namespace core {
         assert(lookup_out != nullptr);
         assert(view_out != nullptr);
 
-        interc_reader = std::thread([this](){
+        interc_reader = std::thread([this]() {
             bool active = true;
             while (active) {
                 try {
@@ -30,7 +31,7 @@ namespace core {
             }
         });
 
-        lookup_reader = std::thread([this](){
+        lookup_reader = std::thread([this]() {
             bool active = true;
             while (active) {
                 try {

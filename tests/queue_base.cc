@@ -15,21 +15,22 @@ using namespace utils;
 Right now this test does not take any parameter
 Is it possible to run this test automatically with different parameters?
  */
-int main(int argc, char** argv){
+int main(int argc, char** argv)
+{
     SafeQueue<int> q;
     bool good = false;
 
-    std::thread producer([&q](){
+    std::thread producer([&q]() {
         int counter = 0;
-        for(int it = 0; it<PRODUCER_ITERATIONS ; it++){
+        for(int it = 0; it<PRODUCER_ITERATIONS ; it++) {
             std::this_thread::sleep_for(std::chrono::milliseconds(PRODUCER_STEP));
-            for(int i=0;i<PRODUCER_RATE;i++,counter++) {
+            for(int i=0; i<PRODUCER_RATE; i++,counter++) {
                 q.push(counter);
             }
         }
     });
 
-    std::thread consumer([&q, &good](){
+    std::thread consumer([&q, &good]() {
         int cur = -1;
         while (not good) {
             try {

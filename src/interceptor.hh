@@ -10,12 +10,14 @@
 
 #include <pcap.h>
 
-namespace interc {
+namespace interc
+{
 
-    class Error: public std::runtime_error {
-        public:
-            Error(const char *msg) : std::runtime_error(msg) {}
-            Error(const std::string & msg) : std::runtime_error(msg) {}
+    class Error: public std::runtime_error
+    {
+      public:
+        Error(const char *msg) : std::runtime_error(msg) {}
+        Error(const std::string & msg) : std::runtime_error(msg) {}
     };
 
     struct Event {
@@ -27,29 +29,30 @@ namespace interc {
         Event(Type type, const std::string &host);
     };
 
-    class Sniffer {
-        public:
-            explicit Sniffer(const char *iface);
-            explicit Sniffer(const std::string &iface);
-            Sniffer();
-            ~Sniffer();
+    class Sniffer
+    {
+      public:
+        explicit Sniffer(const char *iface);
+        explicit Sniffer(const std::string &iface);
+        Sniffer();
+        ~Sniffer();
 
-            void open_live();
-            void close();
+        void open_live();
+        void close();
 
-            void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
-            int get_linktype() const;
-      
-           void set_output(utils::SafeQueue<Event> *outqueue);
-        private:
-            char *errbuf;
-            pcap_t *handle;
-            std::thread run_thread;
-            int linktype;
-            utils::SafeQueue<Event> *outqueue;
+        void got_packet(const struct pcap_pkthdr &hdr, const net::Packet &pkt);
+        int get_linktype() const;
 
-        public:
-            const std::string iface;
+        void set_output(utils::SafeQueue<Event> *outqueue);
+      private:
+        char *errbuf;
+        pcap_t *handle;
+        std::thread run_thread;
+        int linktype;
+        utils::SafeQueue<Event> *outqueue;
+
+      public:
+        const std::string iface;
     };
 
 }

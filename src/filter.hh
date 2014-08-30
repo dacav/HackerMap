@@ -6,12 +6,14 @@
 
 #include <thread>
 
-namespace filter {
-  class Filter {
-  public:
-    Filter();
-    bool check (const interc::Event &event);
-  };
+namespace filter
+{
+    class Filter
+    {
+      public:
+        Filter();
+        bool check (const interc::Event &event);
+    };
 }
 
 #endif

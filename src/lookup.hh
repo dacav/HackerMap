@@ -5,7 +5,8 @@
 #include <safequeue.hh>
 #include <thread>
 
-namespace lookup {
+namespace lookup
+{
 
     struct Coords {
         const double longitude;
@@ -15,26 +16,27 @@ namespace lookup {
     };
 
     struct Mapping {
-      std::string address;
-      Coords coords;
-      Mapping(const std::string& address, Coords coords);
+        std::string address;
+        Coords coords;
+        Mapping(const std::string& address, Coords coords);
     };
 
 
-    class GeoIp {
-        public:
-            GeoIp(const std::string &server);
-            //Coords lookup(net::ipv4...);
-            void run();
-            void terminate();
-            void set_output(utils::SafeQueue<Mapping>* output_queue);
-            const std::string server;
-            utils::SafeQueue<std::string> messages;
-            void join();
-        private:
-            Coords lookup(const std::string &address);
-            utils::SafeQueue<Mapping>* output;
-            std::thread my_thread;
+    class GeoIp
+    {
+      public:
+        GeoIp(const std::string &server);
+        //Coords lookup(net::ipv4...);
+        void run();
+        void terminate();
+        void set_output(utils::SafeQueue<Mapping>* output_queue);
+        const std::string server;
+        utils::SafeQueue<std::string> messages;
+        void join();
+      private:
+        Coords lookup(const std::string &address);
+        utils::SafeQueue<Mapping>* output;
+        std::thread my_thread;
     };
 
 }
