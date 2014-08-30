@@ -22,7 +22,8 @@ AM_LDFLAGS = -L../src
 check_PROGRAMS = \
 	interc_base \
 	network_bytes \
-	queue_base
+	queue_base \
+	lookup_base
 
 TESTS = $(check_PROGRAMS)
 
@@ -37,3 +38,7 @@ interc_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
 network_bytes_SOURCES = network_bytes.cc
 network_bytes_LDADD = -lhackermap
 network_bytes_DEPENDENCIES = $(srcdir)/../src/libhackermap.a
+
+lookup_base_SOURCES = lookup_base.cc
+lookup_base_LDADD = -lhackermap
+lookup_base_DEPENDENCIES = $(srcdir)/../src/libhackermap.a

@@ -27,7 +27,8 @@ libhackermap_a_SOURCES = \
 	cortroller.cc \
 	safequeue.hh \
 	interceptor.cc interceptor.hh \
-	network.cc network.hh
+	network.cc network.hh \
+	lookup.cc lookup.hh
 
 hackermap_SOURCES = main.cc
 hackermap_LDADD = -lhackermap
